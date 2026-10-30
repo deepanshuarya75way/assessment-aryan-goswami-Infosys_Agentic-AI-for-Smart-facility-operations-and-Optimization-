@@ -22,10 +22,10 @@ export default defineConfig({
         // changed — this is what was behind the "chunk larger than
         // 500kB" build warning alongside the route-based lazy-loading in
         // App.jsx.
-        manualChunks: {
-          'vendor-charts': ['recharts'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-icons': ['lucide-react'],
+        manualChunks(id) {
+          if (id.includes('/node_modules/recharts/')) return 'vendor-charts'
+          if (id.includes('/node_modules/framer-motion/')) return 'vendor-motion'
+          if (id.includes('/node_modules/lucide-react/')) return 'vendor-icons'
         },
       },
     },

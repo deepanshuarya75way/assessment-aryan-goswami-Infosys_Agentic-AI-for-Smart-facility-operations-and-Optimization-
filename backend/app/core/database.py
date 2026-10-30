@@ -43,6 +43,7 @@ def get_db():
 
 
 def init_db():
+    from app.models import anomaly_models  # noqa
     # Import models so they're registered on Base before create_all
     from app.models import energy_models  # noqa
     from app.models import maintenance_models  # noqa

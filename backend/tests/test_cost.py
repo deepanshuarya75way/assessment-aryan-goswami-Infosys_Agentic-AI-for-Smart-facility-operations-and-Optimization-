@@ -4,6 +4,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fastapi.testclient import TestClient
 from app.main import app
+from app.core.config import settings
 
 client = TestClient(app)
 client.__enter__()
@@ -71,7 +72,10 @@ def test_forecast_reports_honest_confidence():
 
 
 def test_manual_record_add_and_delete():
-    login = client.post("/api/auth/login", json={"username": "admin", "password": "facilityops123"})
+    # Read the seeded admin's creds from settings (see app/main.py's
+    # lifespan) instead of hardcoding "admin"/"facilityops123" — those
+    # can legitimately differ between local dev and CI.
+    login = client.post("/api/auth/login", json={"username": settings.ADMIN_USERNAME, "password": settings.ADMIN_PASSWORD})
     assert login.status_code == 200
     token = login.json()["access_token"]
     auth_headers = {"Authorization": f"Bearer {token}"}

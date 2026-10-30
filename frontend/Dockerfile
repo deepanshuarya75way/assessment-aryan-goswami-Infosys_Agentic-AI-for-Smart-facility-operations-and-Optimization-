@@ -13,17 +13,17 @@
 # by declaring it as a build ARG and exporting it as an ENV before `npm
 # run build` runs, and docker-compose.yml now passes it as a `build.args:`,
 # not a runtime `environment:`.
-FROM node:20-slim AS build
+FROM node:24-slim AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 
 ARG VITE_API_BASE_URL=http://localhost:8000/api
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 RUN npm run build
 
-FROM node:20-slim
+FROM node:24-slim
 WORKDIR /app
 RUN npm install -g serve
 COPY --from=build /app/dist ./dist

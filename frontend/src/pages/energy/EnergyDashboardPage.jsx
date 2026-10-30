@@ -1,3 +1,4 @@
+import AnomalyPanel from '../../components/shared/AnomalyPanel'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { Zap, Activity, TrendingUp, AlertTriangle, Download, Database, UploadCloud } from 'lucide-react'
 import { energyService } from '../../services/energyService'
@@ -210,6 +211,7 @@ export default function EnergyDashboardPage() {
 
       <div id="overview" className="scroll-mt-16">
         <DashboardHeader Icon={Zap} agentLabel="ENERGY AGENT" title="Energy" emphasis="Monitoring" description={consumption.period} buildingId={dashboard.building_id} lastUpdated={lastUpdated} isRefreshing={refreshing} onRefresh={refreshNow} accent="blue" />
+      <AnomalyPanel domain="energy" buildingId={dashboard.building_id} />
       </div>
 
       <div className="dashboard-content">

@@ -1,3 +1,4 @@
+import AnomalyPanel from '../../components/shared/AnomalyPanel'
 import { useEffect, useState, useCallback } from 'react'
 import { IndianRupee, Database, UploadCloud } from 'lucide-react'
 import { costService, formatINR } from '../../services/costService'
@@ -104,6 +105,7 @@ export default function CostDashboardPage() {
       <div className="pointer-events-none absolute top-40 -right-32 w-[380px] h-[380px] rounded-full bg-teal-400/10 dark:bg-teal-400/[0.07] blur-[110px]" />
 
       <DashboardHeader Icon={IndianRupee} agentLabel="COST OPTIMIZATION AGENT" title="Cost" emphasis="Intelligence" description="vendor spend, budget & anomaly monitoring" buildingId={data.building_id} lastUpdated={lastUpdated} isRefreshing={refreshing} onRefresh={refreshNow} accent="amber" />
+      <AnomalyPanel domain="cost" buildingId={data.building_id} />
 
       <div className="dashboard-content">
         <section className="flex flex-col gap-4">

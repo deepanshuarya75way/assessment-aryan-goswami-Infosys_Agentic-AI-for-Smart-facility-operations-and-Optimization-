@@ -14,6 +14,7 @@ from app.api.cost_routes import router as cost_router
 from app.api.facility_routes import router as facility_router
 from app.api.system_routes import router as system_router
 from app.api.auth_routes import router as auth_router
+from app.api.anomaly_routes import router as anomaly_router
 from app.services import data_service, maintenance_service, occupancy_service, security_service, cost_service
 from app.core.security import hash_password
 from app.models.auth_models import User
@@ -113,6 +114,7 @@ app.include_router(cost_router, prefix=settings.API_V1_PREFIX)
 app.include_router(facility_router, prefix=settings.API_V1_PREFIX)
 app.include_router(system_router, prefix=settings.API_V1_PREFIX)
 app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
+app.include_router(anomaly_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")

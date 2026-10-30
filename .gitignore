@@ -31,3 +31,6 @@ npm-debug.log*
 # --- Misc build artifacts ---
 *.tsbuildinfo
 coverage/
+backend/data/*.db
+backend/data/*.db-shm
+backend/data/*.db-wal

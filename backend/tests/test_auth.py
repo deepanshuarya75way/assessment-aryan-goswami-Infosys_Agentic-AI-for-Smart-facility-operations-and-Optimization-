@@ -4,22 +4,31 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fastapi.testclient import TestClient
 from app.main import app
+from app.core.config import settings
 
 client = TestClient(app)
 client.__enter__()
 
+# The lifespan seeds the demo admin from settings.ADMIN_USERNAME /
+# settings.ADMIN_PASSWORD (see app/main.py), which come from .env and
+# can legitimately differ between local dev and CI. Read them from the
+# same source the app uses instead of hardcoding "admin"/"facilityops123",
+# so these tests can't drift out of sync with whatever actually got seeded.
+ADMIN_USERNAME = settings.ADMIN_USERNAME
+ADMIN_PASSWORD = settings.ADMIN_PASSWORD
+
 
 def test_login_with_seeded_admin_succeeds():
-    r = client.post("/api/auth/login", json={"username": "admin", "password": "facilityops123"})
+    r = client.post("/api/auth/login", json={"username": ADMIN_USERNAME, "password": ADMIN_PASSWORD})
     assert r.status_code == 200
     body = r.json()
     assert body["token_type"] == "bearer"
-    assert body["username"] == "admin"
+    assert body["username"] == ADMIN_USERNAME
     assert len(body["access_token"]) > 20
 
 
 def test_login_wrong_password_rejected():
-    r = client.post("/api/auth/login", json={"username": "admin", "password": "definitely-wrong"})
+    r = client.post("/api/auth/login", json={"username": ADMIN_USERNAME, "password": "definitely-wrong"})
     assert r.status_code == 401
 
 
@@ -27,7 +36,7 @@ def test_login_unknown_user_rejected_same_as_wrong_password():
     """Same status/detail for 'no such user' as for 'wrong password' —
     distinguishing them would let someone enumerate valid usernames."""
     r1 = client.post("/api/auth/login", json={"username": "nobody", "password": "whatever"})
-    r2 = client.post("/api/auth/login", json={"username": "admin", "password": "whatever"})
+    r2 = client.post("/api/auth/login", json={"username": ADMIN_USERNAME, "password": "whatever"})
     assert r1.status_code == r2.status_code == 401
     assert r1.json()["detail"] == r2.json()["detail"]
 
@@ -36,11 +45,11 @@ def test_me_requires_valid_token():
     r = client.get("/api/auth/me")
     assert r.status_code == 401
 
-    login = client.post("/api/auth/login", json={"username": "admin", "password": "facilityops123"})
+    login = client.post("/api/auth/login", json={"username": ADMIN_USERNAME, "password": ADMIN_PASSWORD})
     token = login.json()["access_token"]
     r2 = client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
     assert r2.status_code == 200
-    assert r2.json()["username"] == "admin"
+    assert r2.json()["username"] == ADMIN_USERNAME
 
 
 def test_me_rejects_garbage_token():
@@ -82,7 +91,7 @@ def test_register_rejects_short_username_and_password():
 
 
 def _admin_headers():
-    login = client.post("/api/auth/login", json={"username": "admin", "password": "facilityops123"})
+    login = client.post("/api/auth/login", json={"username": ADMIN_USERNAME, "password": ADMIN_PASSWORD})
     return {"Authorization": f"Bearer {login.json()['access_token']}"}
 
 
@@ -110,7 +119,7 @@ def test_create_user_rejects_invalid_role():
 
 def test_create_user_rejects_duplicate_username():
     headers = _admin_headers()
-    r = client.post("/api/auth/users", json={"username": "admin", "password": "whatever", "role": "technician"}, headers=headers)
+    r = client.post("/api/auth/users", json={"username": ADMIN_USERNAME, "password": "whatever", "role": "technician"}, headers=headers)
     assert r.status_code == 409
 
 
