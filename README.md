@@ -1,5 +1,7 @@
 # Agentic AI for Smart Facility Operations & Optimization
 
+------------------------------------------------------------------------------------------------------------
+
 This is for the 75way Team :
 I have my task that was COST AND ENERGY ANOMALY INTELLIGENCE ,as i completed the project i noticed the tabs are taking a bit of time to open,but they work perfectly fine and the new features are also working along side them
 
@@ -13,6 +15,8 @@ FOR FRONTEND :-
 cd frontend
 npm install 
 npm run dev -- --.host 0.0.0.0
+
+------------------------------------------------------------------------------------------------------------
 
 ## Cost and Energy Anomaly Intelligence
 
