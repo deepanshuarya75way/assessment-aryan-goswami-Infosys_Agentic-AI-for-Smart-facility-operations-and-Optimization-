@@ -26,8 +26,6 @@ npm run dev -- --.host 0.0.0.0
 Energy and Cost now include persistent anomaly review: scan existing data,
 inspect occupancy context and supporting signals, then confirm or dismiss a
 finding. Repeat scans preserve reviews and avoid duplicate source events.
-See [local setup, file guide and verification](docs/ANOMALY_REVIEW.md).
-Use Node.js 24 LTS and Python 3.12/3.13 for this checkout.
 
 ### 🔗 [Live Demo](https://facilityops.onrender.com/)
 
