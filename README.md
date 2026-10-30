@@ -9,11 +9,14 @@ to run them just put these instructions :-
 FOR BACKEND :-
 cd backend
 python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt 
+test -f .env
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 FOR FRONTEND :- 
 cd frontend
-npm install 
+npm ci 
 npm run dev -- --.host 0.0.0.0
 
 ------------------------------------------------------------------------------------------------------------
