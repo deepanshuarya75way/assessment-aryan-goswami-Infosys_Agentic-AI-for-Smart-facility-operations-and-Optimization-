@@ -1,5 +1,19 @@
 # Agentic AI for Smart Facility Operations & Optimization
 
+This is for the 75way Team :
+I have my task that was COST AND ENERGY ANOMALY INTELLIGENCE ,as i completed the project i noticed the tabs are taking a bit of time to open,but they work perfectly fine and the new features are also working along side them
+
+to run them just put these instructions :-  
+FOR BACKEND :-
+cd backend
+python3 -m venv .venv
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+FOR FRONTEND :- 
+cd frontend
+npm install 
+npm run dev -- --.host 0.0.0.0
+
 ## Cost and Energy Anomaly Intelligence
 
 Energy and Cost now include persistent anomaly review: scan existing data,
